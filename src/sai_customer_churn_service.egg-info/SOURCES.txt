@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/sai_customer_churn_service.egg-info/PKG-INFO
+src/sai_customer_churn_service.egg-info/SOURCES.txt
+src/sai_customer_churn_service.egg-info/dependency_links.txt
+src/sai_customer_churn_service.egg-info/requires.txt
+src/sai_customer_churn_service.egg-info/top_level.txt
+src/service/__init__.py
+src/service/app.py
+src/service/train.py
+tests/test_service.py
