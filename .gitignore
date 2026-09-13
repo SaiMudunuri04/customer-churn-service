@@ -5,3 +5,7 @@ __pycache__/
 *.pyc
 artifacts/
 data/private/
+
+build/
+dist/
+*.egg-info/
