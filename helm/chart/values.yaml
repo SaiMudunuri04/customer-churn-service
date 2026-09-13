@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: ghcr.io/saimudunuri04/customer-churn-service
-  tag: "0.1.0"
+  tag: "922dc1677d02d6570c2170514e0bdae23121d945"
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 service:
