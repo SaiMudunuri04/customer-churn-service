@@ -7,6 +7,10 @@ a container, Helm release, Argo CD application, and a CI workflow that builds an
 immutable GHCR image after tests pass. It is a reference implementation; it has not
 been deployed to a user's AWS account or Kubernetes cluster.
 
+## Start here
+
+**Problem:** score churn risk without leaking future information into model training. **What this demonstrates:** chronological evaluation, validation-only threshold selection, a bounded scoring API, and a repeatable SageMaker-to-Helm delivery path. **Inspect first:** [`docs/architecture.md`](docs/architecture.md), [`src/service/train.py`](src/service/train.py), and the tests.
+
 ## Run
 
 ```sh
