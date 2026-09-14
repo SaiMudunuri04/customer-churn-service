@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/SaiMudunuri04/customer-churn-service.git
     targetRevision: main
-    path: helm/chart
+    path: k8s/helm/customer-churn-service
   destination:
     server: https://kubernetes.default.svc
     namespace: customer-churn-service

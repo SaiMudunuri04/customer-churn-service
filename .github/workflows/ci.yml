@@ -2,7 +2,7 @@ name: test-build
 on:
   push:
     branches: [main]
-    paths-ignore: [helm/chart/values.yaml]
+    paths-ignore: [k8s/helm/customer-churn-service/values.yaml]
   pull_request:
   workflow_dispatch:
 permissions: {contents: read}
@@ -13,8 +13,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
-      - run: python -m pip install -e '.[test]'
+      - run: python -m pip install -e '.[test]' ruff==0.16.7
+      - run: ruff check .
       - run: python -m pytest -q
+      - uses: azure/setup-helm@v5
+        with: {version: v3.18.4}
+      - run: helm lint k8s/helm/customer-churn-service --strict
+      - run: helm template customer-churn-service k8s/helm/customer-churn-service --namespace customer-churn-service --debug
+      - run: helm template customer-churn-service k8s/helm/customer-churn-service --namespace customer-churn-service --set autoscaling.enabled=true --set networkPolicy.enabled=true --debug
   publish:
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -34,9 +40,9 @@ jobs:
           tags: ghcr.io/saimudunuri04/customer-churn-service:${{ github.sha }}
       - name: Pin Argo CD image to tested commit
         run: |
-          sed -i 's/^  tag:.*/  tag: "'"$GITHUB_SHA"'"/' helm/chart/values.yaml
+          sed -i 's/^  tag:.*/  tag: "'"$GITHUB_SHA"'"/' k8s/helm/customer-churn-service/values.yaml
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add helm/chart/values.yaml
+          git add k8s/helm/customer-churn-service/values.yaml
           git diff --cached --quiet || git commit -m "Pin image to $GITHUB_SHA [skip ci]"
           git push

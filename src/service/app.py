@@ -10,9 +10,11 @@ import joblib
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+from .observability import RequestLoggingMiddleware
 from .train import FEATURES
 
 app = FastAPI(title="Churn scoring", version="0.1.0")
+app.add_middleware(RequestLoggingMiddleware)
 
 
 class Customer(BaseModel):
