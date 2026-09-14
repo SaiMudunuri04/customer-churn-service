@@ -6,7 +6,7 @@ podLabels: {}
 podAnnotations: {}
 image:
   repository: ghcr.io/saimudunuri04/customer-churn-service
-  tag: "52fb9e052812fa14b4aa91c1360c3853bb00ceb6"
+  tag: "cfd707d0e587c99c368ab057bd3d84f93285be3e"
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 serviceAccount:
