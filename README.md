@@ -30,7 +30,7 @@ provision AWS or a cluster.
 
 ## Training data and model lifecycle
 
-Input `churn.csv` requires `customer_id,observed_at,churned,tenure_months,monthly_spend,support_tickets,usage_hours`. Each customer appears once; `observed_at` is ISO 8601. Empty feature cells are imputed within the training pipeline. The code sorts by observation time, selects a threshold on validation only, and reports ROC-AUC, F1, precision, recall, and Brier score on the untouched test period.
+Input `churn.csv` requires `customer_id,observed_at,churned,tenure_months,monthly_spend,support_tickets,usage_hours`. Each customer appears once with a nonempty ID; `observed_at` is ISO 8601 and observed feature values must be nonnegative. Empty feature cells are imputed within the training pipeline. The code sorts by observation time, selects a threshold on validation only, and reports ROC-AUC, F1, precision, recall, and Brier score on the untouched test period.
 
 ```sh
 python -m service.train --train-file /path/to/churn.csv --output artifacts

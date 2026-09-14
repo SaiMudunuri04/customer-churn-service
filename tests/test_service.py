@@ -43,3 +43,15 @@ def test_duplicate_customer_rejected(tmp_path):
     path.write_text(text)
     with pytest.raises(ValueError, match="Duplicate customer"):
         train.load(path)
+
+
+@pytest.mark.parametrize("before,after,error", [
+    ("customer-1,", ",", "customer_id must be nonempty"),
+    (",51,", ",-1,", "Invalid target or feature"),
+])
+def test_invalid_observations_rejected(tmp_path, before, after, error):
+    path = tmp_path / "churn.csv"
+    dataset(path)
+    path.write_text(path.read_text().replace(before, after, 1))
+    with pytest.raises(ValueError, match=error):
+        train.load(path)

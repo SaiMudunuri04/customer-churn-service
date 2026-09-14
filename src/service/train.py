@@ -29,7 +29,9 @@ def load(path: Path) -> tuple[np.ndarray, np.ndarray, list[str]]:
         rows = list(reader)
     if len(rows) < 40:
         raise ValueError("At least 40 rows are required for train, validation and test splits")
-    ids = [row["customer_id"] for row in rows]
+    ids = [row["customer_id"].strip() for row in rows]
+    if any(not customer_id for customer_id in ids):
+        raise ValueError("customer_id must be nonempty")
     if len(set(ids)) != len(ids):
         raise ValueError("Duplicate customer_id; resolve entity leakage before training")
     try:
@@ -39,7 +41,8 @@ def load(path: Path) -> tuple[np.ndarray, np.ndarray, list[str]]:
         y = np.asarray([int(row["churned"]) for row in rows], dtype=np.int64)
     except (TypeError, ValueError) as exc:
         raise ValueError("Invalid timestamp or numeric value") from exc
-    if not set(y).issubset({0, 1}) or not np.isfinite(x[~np.isnan(x)]).all():
+    observed = x[~np.isnan(x)]
+    if not set(y).issubset({0, 1}) or not np.isfinite(observed).all() or (observed < 0).any():
         raise ValueError("Invalid target or feature")
     return x, y, [row["observed_at"] for row in rows]
 
