@@ -1,3 +1,22 @@
+# Argo CD Application: customer-churn-service
+#
+# GitOps flow: a push to main runs the GitHub Actions CI workflow (.github/workflows/ci.yml),
+# which executes pytest, ruff, and helm lint/template. On success it builds a Docker image,
+# pushes it to ghcr.io/saimudunuri04/customer-churn-service with two tags — the commit SHA
+# and `latest` — and pins the Helm `image.tag` in k8s/helm/customer-churn-service/values.yaml
+# to that tested SHA (skipping CI on the pin commit). Argo CD tracks the chart path below and auto-syncs (prune + selfHeal),
+# creating the destination namespace if missing.
+#
+# Placeholders / environment-specific values to review before applying:
+#   metadata.namespace       - the namespace where Argo CD stores this Application object (usually "argocd")
+#   spec.project             - the Argo CD project this app belongs to ("default" is fine for a single-app setup)
+#   spec.source.repoURL      - git repository that contains the Helm chart (this repo)
+#   spec.source.targetRevision - git branch/tag to track; "main" follows the CI-built, SHA-pinned images
+#   spec.source.path         - path to the Helm chart inside the repo
+#   spec.destination.server  - target cluster API; https://kubernetes.default.svc means the cluster Argo CD runs on
+#   spec.destination.namespace - namespace the release installs into
+#
+# Manifests validated with helm lint/template and kubectl --dry-run=client; not applied to a live cluster.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

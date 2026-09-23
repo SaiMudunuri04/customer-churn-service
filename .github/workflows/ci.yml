@@ -37,7 +37,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/saimudunuri04/customer-churn-service:${{ github.sha }}
+          tags: |
+            ghcr.io/saimudunuri04/customer-churn-service:${{ github.sha }}
+            ghcr.io/saimudunuri04/customer-churn-service:latest
       - name: Pin Argo CD image to tested commit
         run: |
           sed -i 's/^  tag:.*/  tag: "'"$GITHUB_SHA"'"/' k8s/helm/customer-churn-service/values.yaml

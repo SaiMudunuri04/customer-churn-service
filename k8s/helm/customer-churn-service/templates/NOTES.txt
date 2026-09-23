@@ -1,0 +1,15 @@
+{{ .Release.Name }} deployed into namespace {{ .Release.Namespace }}.
+
+Service: {{ include "service.fullname" . }} ({{ .Values.service.type }} port {{ .Values.service.port }})
+
+Next steps:
+  1. Model artifact: mount a reviewed, read-only model.joblib at the path in config.MODEL_PATH
+     (default {{ .Values.config.MODEL_PATH | quote }}; see values.yaml `volumes` / `volumeMounts`).
+  2. Health: GET {{ include "service.fullname" . }}:{{ .Values.service.port }}/health/ready
+  3. Predict: POST {{ include "service.fullname" . }}:{{ .Values.service.port }}/predict
+  4. Credentials: create a cluster Secret and set `envFromSecretName`; never commit secrets.
+  5. Review `values.yaml` before traffic: resources, probes, image pull access, ingress peers.
+
+Autoscaling: {{ .Values.autoscaling.enabled }} (HPA {{ .Values.autoscaling.minReplicas }}-{{ .Values.autoscaling.maxReplicas }} @ {{ .Values.autoscaling.targetCPUUtilizationPercentage }}% CPU)
+NetworkPolicy: {{ .Values.networkPolicy.enabled }} | PDB: {{ .Values.pdb.enabled }} (minAvailable {{ .Values.pdb.minAvailable }})
+Image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

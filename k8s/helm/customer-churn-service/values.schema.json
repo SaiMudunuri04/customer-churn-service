@@ -146,6 +146,13 @@
           "type": "array"
         }
       }
+    },
+    "config": {
+      "type": "object",
+      "description": "Non-secret environment variables rendered into a ConfigMap and injected via envFrom; keys become environment variable names, values must be strings.",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   }
 }
