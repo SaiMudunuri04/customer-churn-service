@@ -65,10 +65,16 @@ spec:
               value: {{ $value | quote }}
             {{- end }}
           {{- end }}
-          {{- if .Values.envFromSecretName }}
+          {{- if or .Values.config .Values.envFromSecretName }}
           envFrom:
+            {{- if .Values.config }}
+            - configMapRef:
+                name: {{ include "service.fullname" . }}-config
+            {{- end }}
+            {{- if .Values.envFromSecretName }}
             - secretRef:
                 name: {{ .Values.envFromSecretName | quote }}
+            {{- end }}
           {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:

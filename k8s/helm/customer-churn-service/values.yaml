@@ -76,5 +76,9 @@ networkPolicy:
   egressTo: []
 env: {}
 envFromSecretName: ""
+# Non-secret environment variables rendered into a ConfigMap (templates/configmap.yaml)
+# and injected via envFrom. The app reads MODEL_PATH to find the model artifact.
+config:
+  MODEL_PATH: "/models/model.joblib"
 volumeMounts: []
 volumes: []
